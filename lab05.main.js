@@ -1,7 +1,9 @@
 // Import built-in Node.js package path.
 const path = require('path');
 
+
 const ServiceNowConnector = require(path.join(__dirname, '/connector.js'));
+
 const EventEmitter = require('events').EventEmitter;
 
 /**
@@ -11,10 +13,12 @@ const EventEmitter = require('events').EventEmitter;
 * @description This class contains IAP adapter properties and methods that IAP
 * brokers and applications can execute.
 */
+
 class ServiceNowAdapter extends EventEmitter {
 
 /**
 * Here we document the ServiceNowAdapter class' callback.
+
 * @callback ServiceNowAdapter~requestCallback
 * @param {(object|string)} responseData - The entire REST API response.
 * @param {error} [errorMessage] - An error thrown by REST API call.
@@ -85,15 +89,19 @@ throw new Error('ServiceNowAdapter: adapter property "serviceNowTable" required'
 return properties;
 }
 
+
 /**
 * @memberof ServiceNowAdapter
 * @method connect
 * @summary Connect to ServiceNow
 * @description Complete a single healthcheck and emit ONLINE or OFFLINE.
 */
+
+
 connect() {
 this.healthcheck();
 }
+
 
 /**
 * @memberof ServiceNowAdapter
@@ -106,6 +114,8 @@ this.healthcheck();
 * handles the response.
 */
 healthcheck(callback) {
+//this.emitOnline();
+//}
 this.getRecord((result, error) => {
 /**
 * For this lab, complete the if else conditional
@@ -113,10 +123,16 @@ this.getRecord((result, error) => {
 * or the instance was hibernating.
 */
 if (error) {
-this.emitOffline();
+/* Write this block. */
+//this.emitStatus('ONLINE');
+this.emitOnline();
 } else if (result === 'Service Now instance is hibernating') {
-this.emitOffline();
+/* Write this block. */
+//this.emitStatus('ONLINE');
+this.emitOnline();
 } else {
+/* Write this block. */
+//this.emitStatus('ONLINE');
 this.emitOnline();
 }
 
@@ -147,11 +163,13 @@ this.emitStatus('ONLINE');
 log.info('ServiceNow: Instance is awake.');
 }
 
+
 /**
 * @memberof ServiceNowAdapter
 * @method emitStatus
 * @summary Emit an Event
 * @description Helper function for emitting events.
+
 *
 * @param {string} status - The event to emit.
 */
@@ -169,6 +187,7 @@ this.emit(status, { id: this.id });
 * handles the response.
 */
 getRecord(callback) {
+//this.get();
 this.connector.get(callback);
 }
 
@@ -181,8 +200,13 @@ this.connector.get(callback);
 * @param {ServiceNowAdapter~requestCallback} callback - The callback that
 * handles the response.
 */
+
+
+
 postRecord(callback) {
+//this.post();
 this.connector.post(callback);
+//connector.post((results, error)=> callback(results, error));
 }
 }
 
